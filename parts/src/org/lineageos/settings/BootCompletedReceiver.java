@@ -20,8 +20,11 @@ package org.lineageos.settings;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.IBinder;
 import android.content.IntentFilter;
 import android.util.Log;
+import android.view.Display.HdrCapabilities;
+import android.view.SurfaceControl;
 
 import org.lineageos.settings.doze.DozeUtils;
 import org.lineageos.settings.dirac.DiracUtils;
@@ -50,5 +53,11 @@ public class BootCompletedReceiver extends BroadcastReceiver {
 
         // Thermal Profiles
         ThermalUtils.startService(context);
+
+        // Override HDR types
+        final IBinder displayToken = SurfaceControl.getInternalDisplayToken();
+        SurfaceControl.overrideHdrTypes(displayToken, new int[]{
+                HdrCapabilities.HDR_TYPE_DOLBY_VISION, HdrCapabilities.HDR_TYPE_HDR10,
+                HdrCapabilities.HDR_TYPE_HLG, HdrCapabilities.HDR_TYPE_HDR10_PLUS});
     }
 }
